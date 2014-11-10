@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FailedPrintJobDeleter", "FailedPrintJobDeleter\FailedPrintJobDeleter.csproj", "{4B5A6057-7D0E-423D-AD8F-1258EC3F17A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A9959E9C-81F5-4F44-9011-90635153E965}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FailedPrintJobDeleterCLI", "FailedPrintJobDeleterCLI\FailedPrintJobDeleterCLI.csproj", "{8902B405-AC9F-4105-8CA8-D8A776C1D2B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FailedPrintJobDeleterService", "FailedPrintJobDeleterService\FailedPrintJobDeleterService.csproj", "{27878312-28F9-4795-B328-C2120CF4E0F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KMC554DeviceModule", "KMC554DeviceModule\KMC554DeviceModule.csproj", "{BEF6D6E1-5BA0-46FA-9280-FD3BC01A15D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPJDTests", "FPJDTests\FPJDTests.csproj", "{A8182B5E-0510-414C-A879-E63714CE2C32}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B5A6057-7D0E-423D-AD8F-1258EC3F17A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B5A6057-7D0E-423D-AD8F-1258EC3F17A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B5A6057-7D0E-423D-AD8F-1258EC3F17A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B5A6057-7D0E-423D-AD8F-1258EC3F17A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8902B405-AC9F-4105-8CA8-D8A776C1D2B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8902B405-AC9F-4105-8CA8-D8A776C1D2B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8902B405-AC9F-4105-8CA8-D8A776C1D2B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8902B405-AC9F-4105-8CA8-D8A776C1D2B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27878312-28F9-4795-B328-C2120CF4E0F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27878312-28F9-4795-B328-C2120CF4E0F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27878312-28F9-4795-B328-C2120CF4E0F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27878312-28F9-4795-B328-C2120CF4E0F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEF6D6E1-5BA0-46FA-9280-FD3BC01A15D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEF6D6E1-5BA0-46FA-9280-FD3BC01A15D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEF6D6E1-5BA0-46FA-9280-FD3BC01A15D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEF6D6E1-5BA0-46FA-9280-FD3BC01A15D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8182B5E-0510-414C-A879-E63714CE2C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8182B5E-0510-414C-A879-E63714CE2C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8182B5E-0510-414C-A879-E63714CE2C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8182B5E-0510-414C-A879-E63714CE2C32}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
