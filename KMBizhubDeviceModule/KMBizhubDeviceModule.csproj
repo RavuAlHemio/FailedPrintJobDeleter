@@ -7,8 +7,8 @@
     <ProjectGuid>{BEF6D6E1-5BA0-46FA-9280-FD3BC01A15D7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KMC554DeviceModule</RootNamespace>
-    <AssemblyName>KMC554DeviceModule</AssemblyName>
+    <RootNamespace>KMBizhubDeviceModule</RootNamespace>
+    <AssemblyName>KMBizhubDeviceModule</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,15 +31,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KMBizhubDevice.cs" />
+    <Compile Include="KMC203Device.cs" />
+    <Compile Include="KMC554Device.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FailedPrintJobDeleter\FailedPrintJobDeleter.csproj">
+      <Project>{4b5a6057-7d0e-423d-ad8f-1258ec3f17a7}</Project>
+      <Name>FailedPrintJobDeleter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

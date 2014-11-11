@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FailedPrintJobDeleterCLI", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FailedPrintJobDeleterService", "FailedPrintJobDeleterService\FailedPrintJobDeleterService.csproj", "{27878312-28F9-4795-B328-C2120CF4E0F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KMC554DeviceModule", "KMC554DeviceModule\KMC554DeviceModule.csproj", "{BEF6D6E1-5BA0-46FA-9280-FD3BC01A15D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KMBizhubDeviceModule", "KMBizhubDeviceModule\KMBizhubDeviceModule.csproj", "{BEF6D6E1-5BA0-46FA-9280-FD3BC01A15D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPJDTests", "FPJDTests\FPJDTests.csproj", "{A8182B5E-0510-414C-A879-E63714CE2C32}"
 EndProject
