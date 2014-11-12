@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Net;
 using System.Xml;
 using FailedPrintJobDeleter;
 
@@ -52,6 +53,7 @@ namespace KMBizhubDeviceModule
             Https = parameters.ContainsKey("Https") && bool.Parse(parameters["Https"]);
 
             Client = new CookieWebClient();
+            Client.IgnoreCookiePaths = true;
         }
 
         /// <summary>
@@ -70,35 +72,12 @@ namespace KMBizhubDeviceModule
         }
 
         /// <summary>
-        /// Logs into the printer's user mode as admin.
-        /// </summary>
-        protected virtual void Login()
-        {
-            var values = new NameValueCollection
-            {
-                {"func", "PSL_LP0_TOP"},
-                {"R_ADM", "Admin"},
-                {"password", AdminPassword},
-                {"Mode", "Admin"},
-                {"ViewMode", "Html"},
-                {"BrowseMode", "Low"}
-            };
-
-            Client.UploadValues(
-                GetUri(LoginEndpoint),
-                "POST",
-                values
-            );
-        }
-
-        /// <summary>
         /// Fetches an XML document from the printer.
         /// </summary>
         /// <param name="endpoint">The endpoint for which to return the XML document.</param>
         protected virtual XmlDocument FetchXml(string endpoint)
         {
             var docString = Client.DownloadString(GetUri(endpoint));
-
             var doc = new XmlDocument();
             doc.LoadXml(docString);
             return doc;
@@ -129,6 +108,35 @@ namespace KMBizhubDeviceModule
         public override string ToString()
         {
             return string.Format("{0}({1})", GetType().Name, Hostname);
+        }
+
+        protected void AddCookie(string cookieName, string cookieValue)
+        {
+            Client.CookieJar.Add(new Cookie(
+                cookieName,
+                cookieValue,
+                "/",
+                Hostname
+            ));
+        }
+
+        protected virtual void Login()
+        {
+            // I want the HTML edition
+            AddCookie("vm", "Html");
+
+            var values = new NameValueCollection
+            {
+                {"func", "PSL_LP0_TOP"},
+                {"R_ADM", "Admin"},
+                {"password", AdminPassword}
+            };
+
+            Client.UploadValues(
+                GetUri(LoginEndpoint),
+                "POST",
+                values
+                );
         }
     }
 }

@@ -94,7 +94,27 @@ namespace FailedPrintJobDeleter
 
                         // instantiate the object
                         var assembly = Assembly.Load(assemblyName);
+                        if (assembly == null)
+                        {
+                            Logger.ErrorFormat(
+                                "assembly {1} (for class {0}) could not be loaded",
+                                className,
+                                assemblyName
+                            );
+                            continue;
+                        }
+
                         var cls = assembly.GetType(className);
+                        if (cls == null)
+                        {
+                            Logger.ErrorFormat(
+                                "class {0} not found in assembly {1}",
+                                className,
+                                assemblyName
+                            );
+                            continue;
+                        }
+
                         if (!typeof(IPrinterDevice).IsAssignableFrom(cls))
                         {
                             Logger.ErrorFormat(

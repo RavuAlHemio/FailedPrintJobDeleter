@@ -1,13 +1,17 @@
 ﻿using System;
 using FailedPrintJobDeleter;
+using log4net;
 
 namespace FailedPrintJobDeleterCLI
 {
     static class Program
     {
+        private static readonly ILog Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static void Main(string[] args)
         {
             Config.Load();
+
             // setup logging, including console logging
             Util.SetupLogging();
             SetupConsoleLogging();
