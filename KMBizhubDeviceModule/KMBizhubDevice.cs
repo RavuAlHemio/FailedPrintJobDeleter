@@ -136,7 +136,7 @@ namespace KMBizhubDeviceModule
                 GetUri(LoginEndpoint),
                 "POST",
                 values
-                );
+            );
         }
     }
 }

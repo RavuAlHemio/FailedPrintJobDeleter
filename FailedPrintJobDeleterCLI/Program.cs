@@ -6,8 +6,6 @@ namespace FailedPrintJobDeleterCLI
 {
     static class Program
     {
-        private static readonly ILog Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         static void Main(string[] args)
         {
             Config.Load();
