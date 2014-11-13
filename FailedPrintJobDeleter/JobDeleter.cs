@@ -54,11 +54,12 @@ namespace FailedPrintJobDeleter
 
                 try
                 {
+                    Logger.Debug("Sleeping.");
                     Thread.Sleep(TimeSpan.FromMinutes(Config.UpdatePeriodInMinutes));
                 }
                 catch (ThreadInterruptedException)
                 {
-                    Logger.Debug("interrupted!");
+                    Logger.Debug("Interrupted!");
                 }
             }
         }
@@ -73,6 +74,7 @@ namespace FailedPrintJobDeleter
         public void Stop()
         {
             StopNow = true;
+            _thread.Interrupt();
             _thread.Join();
         }
     }
