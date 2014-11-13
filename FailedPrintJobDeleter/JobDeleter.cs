@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using log4net;
 
@@ -21,22 +23,47 @@ namespace FailedPrintJobDeleter
         /// </summary>
         private Thread _thread;
 
-        protected void DeleteJobs()
+        protected void DeleteJobsOnPrinter(IPrinterDevice printerDevice)
         {
-            foreach (var printerDevice in Config.PrinterDevices)
+            for (; ; )
             {
                 if (StopNow)
                 {
+                    return;
+                }
+
+                Logger.DebugFormat("fetching deletable jobs for {0}", printerDevice);
+
+                ICollection<string> jobsToDelete;
+                try
+                {
+                    jobsToDelete = printerDevice.GetFailedJobIDs();
+                    foreach (var jobToDelete in jobsToDelete)
+                    {
+                        Logger.InfoFormat("deleting job {1} on printer {0}", printerDevice, jobToDelete);
+                        printerDevice.DeleteFailedJob(jobToDelete);
+                    }
+                }
+                catch (WebException we)
+                {
+                    Logger.WarnFormat("WebException while contacting {0}: {1}", printerDevice, we);
+                    // next printer
                     break;
                 }
 
-                Logger.InfoFormat("fetching deletable jobs for {0}", printerDevice);
-
-                var jobsToDelete = printerDevice.GetFailedJobIDs();
-                foreach (var jobToDelete in jobsToDelete)
+                if (StopNow || jobsToDelete.Count == 0)
                 {
-                    Logger.InfoFormat("deleting job {1} on printer {0}", printerDevice, jobToDelete);
-                    printerDevice.DeleteFailedJob(jobToDelete);
+                    return;
+                }
+
+                try
+                {
+                    Logger.Debug("Repetition delay.");
+                    Thread.Sleep(TimeSpan.FromSeconds(Config.CheckRepetitionDelayInSeconds));
+                }
+                catch (ThreadInterruptedException)
+                {
+                    Logger.Debug("Interrupted!");
                 }
             }
         }
@@ -45,7 +72,15 @@ namespace FailedPrintJobDeleter
         {
             while (!StopNow)
             {
-                DeleteJobs();
+                foreach (var printerDevice in Config.PrinterDevices)
+                {
+                    if (StopNow)
+                    {
+                        return;
+                    }
+
+                    DeleteJobsOnPrinter(printerDevice);
+                }
 
                 if (StopNow)
                 {
@@ -55,7 +90,7 @@ namespace FailedPrintJobDeleter
                 try
                 {
                     Logger.Debug("Sleeping.");
-                    Thread.Sleep(TimeSpan.FromMinutes(Config.UpdatePeriodInMinutes));
+                    Thread.Sleep(TimeSpan.FromMinutes(Config.TimeBetweenChecksInMinutes));
                 }
                 catch (ThreadInterruptedException)
                 {

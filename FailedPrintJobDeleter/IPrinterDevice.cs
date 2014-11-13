@@ -11,7 +11,7 @@ namespace FailedPrintJobDeleter
         /// Fetch a list of failed job IDs.
         /// </summary>
         /// <returns>List of failed job IDs.</returns>
-        IEnumerable<string> GetFailedJobIDs();
+        ICollection<string> GetFailedJobIDs();
 
         /// <summary>
         /// Deletes a job which failed.

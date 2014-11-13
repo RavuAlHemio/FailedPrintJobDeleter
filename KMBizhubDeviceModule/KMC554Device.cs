@@ -18,7 +18,7 @@ namespace KMBizhubDeviceModule
         {
         }
 
-        public override IEnumerable<string> GetFailedJobIDs()
+        public override ICollection<string> GetFailedJobIDs()
         {
             var ret = new List<string>();
 

@@ -83,7 +83,7 @@ namespace KMBizhubDeviceModule
             return doc;
         }
 
-        public abstract IEnumerable<string> GetFailedJobIDs();
+        public abstract ICollection<string> GetFailedJobIDs();
 
         public virtual void DeleteFailedJob(string jobID)
         {

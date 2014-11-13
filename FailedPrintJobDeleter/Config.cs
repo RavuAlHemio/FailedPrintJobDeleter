@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -23,9 +24,15 @@ namespace FailedPrintJobDeleter
         }
 
         /// <summary>
-        /// Update period, in minutes.
+        /// How long to sleep each time before checking for failed jobs.
         /// </summary>
-        public static double UpdatePeriodInMinutes { get; set; }
+        public static double TimeBetweenChecksInMinutes { get; set; }
+
+        /// <summary>
+        /// How long to sleep after deleting a failed job before re-checking the printer for more
+        /// failed jobs.
+        /// </summary>
+        public static double CheckRepetitionDelayInSeconds { get; set; }
 
         /// <summary>
         /// The printer devices.
@@ -34,7 +41,8 @@ namespace FailedPrintJobDeleter
 
         static Config()
         {
-            UpdatePeriodInMinutes = 5.0;
+            TimeBetweenChecksInMinutes = 5.0;
+            CheckRepetitionDelayInSeconds = 20.0;
             PrinterDevices = new List<IPrinterDevice>();
         }
 
@@ -60,9 +68,13 @@ namespace FailedPrintJobDeleter
             }
 
             var config = JObject.Parse(inputString);
-            if (config["UpdatePeriodInMinutes"] != null)
+            if (config["TimeBetweenChecksInMinutes"] != null)
             {
-                UpdatePeriodInMinutes = (double)config["UpdatePeriodInMinutes"];
+                TimeBetweenChecksInMinutes = (double)config["TimeBetweenChecksInMinutes"];
+            }
+            if (config["CheckRepetitionDelayInSeconds"] != null)
+            {
+                CheckRepetitionDelayInSeconds = (double)config["CheckRepetitionDelayInSeconds"];
             }
             if (config["PrinterDevices"] != null)
             {
