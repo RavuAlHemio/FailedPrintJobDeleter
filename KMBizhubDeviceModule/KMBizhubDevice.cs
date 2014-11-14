@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
+using System.Reflection;
 using System.Xml;
 using FailedPrintJobDeleter;
+using log4net;
 
 namespace KMBizhubDeviceModule
 {
@@ -12,6 +14,8 @@ namespace KMBizhubDeviceModule
     /// </summary>
     public abstract class KMBizhubDevice : IPrinterDevice
     {
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The endpoint to which to post login requests.
         /// </summary>
@@ -21,6 +25,11 @@ namespace KMBizhubDeviceModule
         /// The endpoint at which to receive active (including failed) jobs.
         /// </summary>
         public const string DeleteJobEndpoint = "/wcd/user.cgi";
+
+        /// <summary>
+        /// The endpoint at which to receive general printer status information.
+        /// </summary>
+        public const string CommonStatusEndpoint = "/wcd/common.xml";
 
         /// <summary>
         /// The hostname of the printer.
@@ -57,6 +66,16 @@ namespace KMBizhubDeviceModule
         }
 
         /// <summary>
+        /// XPath string to fetch all jobs that have an error.
+        /// </summary>
+        public abstract string ErrorJobsXPath { get; }
+
+        /// <summary>
+        /// The endpoint at which to receive active (including failed) jobs.
+        /// </summary>
+        public abstract string ActiveJobsEndpoint { get; }
+
+        /// <summary>
         /// Returns the URI for a specific endpoint on the printer.
         /// </summary>
         /// <param name="endpoint">The endpoint for which to return a URI.</param>
@@ -83,7 +102,47 @@ namespace KMBizhubDeviceModule
             return doc;
         }
 
-        public abstract ICollection<string> GetFailedJobIDs();
+        public ICollection<string> GetFailedJobIDs()
+        {
+            var ret = new List<string>();
+
+            // ensure we're logged in
+            Login();
+
+            // check status
+            var statusDoc = FetchXml(CommonStatusEndpoint);
+            var statusElement = statusDoc.SelectSingleNode("/MFP/DeviceStatus");
+            if (statusElement != null)
+            {
+                var printerStatusNode = statusElement.SelectSingleNode("./PrintStatus/text()");
+                var scannerStatusNode = statusElement.SelectSingleNode("./ScanStatus/text()");
+                var printerStatus = printerStatusNode == null ? "unknown" : printerStatusNode.Value;
+                var scannerStatus = scannerStatusNode == null ? "unknown" : scannerStatusNode.Value;
+
+                Logger.DebugFormat("{0}: printer status {1}, scanner status {2}", this, printerStatus, scannerStatus);
+            }
+
+            var doc = FetchXml(ActiveJobsEndpoint);
+            var jobElements = doc.SelectNodes(ErrorJobsXPath);
+            if (jobElements == null)
+            {
+                return ret.ToArray();
+            }
+
+            foreach (XmlElement jobElement in jobElements)
+            {
+                var jobIDNode = jobElement.SelectSingleNode("./JobID/text()");
+                if (jobIDNode == null)
+                {
+                    continue;
+                }
+
+                var jobID = jobIDNode.Value;
+                ret.Add(jobID);
+            }
+
+            return ret.ToArray();
+        }
 
         public virtual void DeleteFailedJob(string jobID)
         {
