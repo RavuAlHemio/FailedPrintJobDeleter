@@ -1,6 +1,5 @@
 ﻿using System;
 using FailedPrintJobDeleter;
-using log4net;
 
 namespace FailedPrintJobDeleterCLI
 {
@@ -8,14 +7,15 @@ namespace FailedPrintJobDeleterCLI
     {
         static void Main(string[] args)
         {
-            Config.Load();
+            var config = new Config();
+            config.Load();
 
             // setup logging, including console logging
             Util.SetupLogging();
             SetupConsoleLogging();
 
             // prepare everything
-            var deleter = new JobDeleter();
+            var deleter = new JobDeleter(config);
 
             deleter.Start();
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -8,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace FailedPrintJobDeleter
 {
-    public static class Config
+    public class Config
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -26,20 +25,20 @@ namespace FailedPrintJobDeleter
         /// <summary>
         /// How long to sleep each time before checking for failed jobs.
         /// </summary>
-        public static double TimeBetweenChecksInMinutes { get; set; }
+        public double TimeBetweenChecksInMinutes { get; set; }
 
         /// <summary>
         /// How long to sleep after deleting a failed job before re-checking the printer for more
         /// failed jobs.
         /// </summary>
-        public static double CheckRepetitionDelayInSeconds { get; set; }
+        public double CheckRepetitionDelayInSeconds { get; set; }
 
         /// <summary>
         /// The printer devices.
         /// </summary>
-        public static List<IPrinterDevice> PrinterDevices { get; set; }
+        public List<IPrinterDevice> PrinterDevices { get; set; }
 
-        static Config()
+        public Config()
         {
             TimeBetweenChecksInMinutes = 5.0;
             CheckRepetitionDelayInSeconds = 20.0;
@@ -49,7 +48,7 @@ namespace FailedPrintJobDeleter
         /// <summary>
         /// Loads the configuration from the JSON file.
         /// </summary>
-        public static void Load()
+        public void Load()
         {
             string inputString;
 

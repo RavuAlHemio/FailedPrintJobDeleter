@@ -19,9 +19,23 @@ namespace FailedPrintJobDeleter
         protected volatile bool StopNow = false;
 
         /// <summary>
+        /// The configuration.
+        /// </summary>
+        private Config _config;
+
+        /// <summary>
         /// The print job deletion thread.
         /// </summary>
         private Thread _thread;
+
+        /// <summary>
+        /// Initializes a job deleter.
+        /// </summary>
+        /// <param name="config">The configuration object.</param>
+        public JobDeleter(Config config)
+        {
+            _config = config;
+        }
 
         protected void DeleteJobsOnPrinter(IPrinterDevice printerDevice)
         {
@@ -59,7 +73,7 @@ namespace FailedPrintJobDeleter
                 try
                 {
                     Logger.Debug("Repetition delay.");
-                    Thread.Sleep(TimeSpan.FromSeconds(Config.CheckRepetitionDelayInSeconds));
+                    Thread.Sleep(TimeSpan.FromSeconds(_config.CheckRepetitionDelayInSeconds));
                 }
                 catch (ThreadInterruptedException)
                 {
@@ -72,7 +86,7 @@ namespace FailedPrintJobDeleter
         {
             while (!StopNow)
             {
-                foreach (var printerDevice in Config.PrinterDevices)
+                foreach (var printerDevice in _config.PrinterDevices)
                 {
                     if (StopNow)
                     {
@@ -90,7 +104,7 @@ namespace FailedPrintJobDeleter
                 try
                 {
                     Logger.Debug("Sleeping.");
-                    Thread.Sleep(TimeSpan.FromMinutes(Config.TimeBetweenChecksInMinutes));
+                    Thread.Sleep(TimeSpan.FromMinutes(_config.TimeBetweenChecksInMinutes));
                 }
                 catch (ThreadInterruptedException)
                 {
