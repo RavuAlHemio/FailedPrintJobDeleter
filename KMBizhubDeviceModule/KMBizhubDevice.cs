@@ -16,6 +16,9 @@ namespace KMBizhubDeviceModule
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        protected const string PaperJamCode = "140005";
+        protected static readonly HashSet<string> NonErrorCodes = new HashSet<string> { PaperJamCode };
+
         /// <summary>
         /// The endpoint to which to post login requests.
         /// </summary>
@@ -120,6 +123,12 @@ namespace KMBizhubDeviceModule
                 var scannerStatus = scannerStatusNode == null ? "unknown" : scannerStatusNode.Value;
 
                 Logger.DebugFormat("{0}: printer status {1}, scanner status {2}", this, printerStatus, scannerStatus);
+
+                if (NonErrorCodes.Contains(printerStatus))
+                {
+                    Logger.InfoFormat("{0}: non-delete status {1}; not deleting anything", this, printerStatus);
+                    return ret.ToArray();
+                }
             }
 
             var doc = FetchXml(ActiveJobsEndpoint);
